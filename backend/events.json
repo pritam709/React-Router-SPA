@@ -1,11 +1,1 @@
-{
-  "events": [
-    {
-      "id": "e1",
-      "title": "A dummy event",
-      "date": "2023-02-22",
-      "image": "https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg",
-      "description": "Join this amazing event and connect with fellow developers."
-    }
-  ]
-}
+{"events":[{"title":"test event","image":"https://i.pinimg.com/originals/f6/b8/49/f6b8492ace988890e9d49b67b350f8c3.jpg","description":"pablo","date":"2023-07-26","id":"9bfc8b58-bb9e-4818-8cb4-db8d4db352e1"},{"title":"a new event tha","image":"https://www.oyorooms.com/blog/wp-content/uploads/2018/02/event.jpg","description":"new event planned","date":"2023-07-28","id":"b66bed8c-6536-452d-be99-5637574fba15"},{"id":"e1","title":"A dummy event","date":"2023-02-22","image":"https://blog.hubspot.de/hubfs/Germany/Blog_images/Optimize_Marketing%20Events%20DACH%202021.jpg","description":"Join this amazing event and connect with fellow developers."}]}

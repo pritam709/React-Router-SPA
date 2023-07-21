@@ -1,15 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { json, redirect } from "react-router-dom";
+import { useNavigate ,Form,useActionData} from "react-router-dom";
 
 import classes from "./EventForm.module.css";
 
 function EventForm({ method, event }) {
+ 
+  const data= useActionData();
+
   const navigate = useNavigate();
   function cancelHandler() {
     navigate("..");
   }
 
   return (
-    <form className={classes.form}>
+    <Form method={method} className={classes.form}>
+    {data && data.errors && <ul>{Object.values(data.errors).map(err=><li key = {err}>{err}</li>)}</ul>}
       <p>
         <label htmlFor="title">Title</label>
         <input
@@ -17,7 +22,7 @@ function EventForm({ method, event }) {
           type="text"
           name="title"
           required
-          defaultValue={event.title}
+          defaultValue={event ? event.title : ""}
         />
       </p>
       <p>
@@ -27,7 +32,7 @@ function EventForm({ method, event }) {
           type="url"
           name="image"
           required
-          defaultValue={event.image}
+          defaultValue={event ? event.image : ""}
         />
       </p>
       <p>
@@ -37,7 +42,7 @@ function EventForm({ method, event }) {
           type="date"
           name="date"
           required
-          defaultValue={event.date}
+          defaultValue={event ? event.date:""}
         />
       </p>
       <p>
@@ -47,7 +52,7 @@ function EventForm({ method, event }) {
           name="description"
           rows="5"
           required
-          defaultValue={event.description}
+          defaultValue={event ? event.description :""}
         />
       </p>
       <div className={classes.actions}>
@@ -56,8 +61,45 @@ function EventForm({ method, event }) {
         </button>
         <button>Save</button>
       </div>
-    </form>
+    </Form>
   );
 }
 
 export default EventForm;
+
+export async function action ({request,params}){
+  const method =request.method;
+  const id= params.eventId;
+  const data =await request.formData();
+
+  const eventData={
+    title:data.get("title"),
+    image:data.get("image"),
+    description:data.get("description"),
+    date:data.get("date")
+  }
+  let url ="http://localhost:8080/events"
+
+  if(method==="PATCH"){
+    url= "http://localhost:8080/events/"+id;
+  }
+
+  const response= await fetch(url,{
+    method:method,
+    headers:{
+      "content-type":"application/json"
+    },
+    body:JSON.stringify(eventData)
+  })
+
+  if(response.status===422){
+    return response;
+  }
+
+  if(!response.ok){
+    return json({message:"error in data submission"},{status:500})
+  }
+
+  return redirect("/events")
+
+}
